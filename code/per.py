@@ -33,7 +33,8 @@ max_epochs = 20
 
 snapshots = []
 step = 0
-
+min_E_in = 10000
+min_w = 0
 for epoch in range(1, max_epochs+1):
     errors = 0
     for i in range(len(y)):
@@ -41,6 +42,10 @@ for epoch in range(1, max_epochs+1):
         y_pred = sign(np.dot(w, xi))
         if y_pred != yi:
             w = w + eta * yi * xi
+            E_in = Evaluate(w)
+            if E_in < min_E_in:
+                min_E_in = E_in
+                min_w = w
             step += 1
             snapshots.append({
                 "step": step,
